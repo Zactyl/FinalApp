@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,24 +23,34 @@ public class MainActivity extends AppCompatActivity {
     public void goToManage(View view)
     {
         // Create an intent in order to go to the ManageList Activity
-        Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+        Intent intent = new Intent(getApplicationContext(), ManageActivity.class);
 
         startActivity(intent);
     }
 
     public void tryLogin(View view)
     {
+        SharedPreferences sharedPreferences = this.getSharedPreferences("com.jbaldridge.sharedpreferences", Context.MODE_PRIVATE);
+
+
         EditText usernameEditText = (EditText) findViewById(R.id.emailText);
         EditText passwordEditText = (EditText) findViewById(R.id.passwordText);
 
         String username = usernameEditText.getText().toString();
         String passwordEntered = passwordEditText.getText().toString();
-        //String passwordStored = sharedPreferences.getString(username, "");
+        String passwordStored = sharedPreferences.getString(username, "");
 
         // Creates Logs in order to show the entered values
+
         Log.i("Info", "Username is: " + username);
         Log.i("Info", "Password entered is: " + passwordEntered);
-        //Log.i("Info", "Password stored is: " + passwordStored);
+        Log.i("Info", "Password stored is: " + passwordStored);
+
+        if (passwordStored.equals(passwordEntered))
+        {
+            Toast.makeText(MainActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+            goToManage(view);
+        }
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
